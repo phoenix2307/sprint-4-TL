@@ -1,9 +1,13 @@
-import axios from 'axios'
-import {DeleteTaskResponse, DomainTask, GetTasksResponse, UpdateTaskModel, UpdateTaskResponse} from "./tasksApi.types";
+import {DomainTask, GetTasksResponse, UpdateTaskModel} from "./tasksApi.types";
 import {Todolist} from "./todolistsApi.types";
 import {instance} from "../../../common/instance/instance";
+import {BaseResponse} from "../../../common/types/types";
 
 export const tasksApi = {
+    createTask(payload: {title: string, todolistId: string}) {
+        const {title, todolistId} = payload
+        return instance.post<BaseResponse<{item: DomainTask}>>(`todo-lists/${todolistId}/tasks`, {title})
+    },
 
     getTasks(payload: { tl: Todolist }) {
         const {tl} = payload
@@ -13,18 +17,18 @@ export const tasksApi = {
     changeTaskStatus(payload: { task: DomainTask, model: UpdateTaskModel }) {
         const {task, model} = payload
         return instance
-            .put<UpdateTaskResponse>(`todo-lists/${task.todoListId}/tasks/${task.id}`, model)
+            .put<BaseResponse<{item: DomainTask}>>(`todo-lists/${task.todoListId}/tasks/${task.id}`, model)
     },
 
     changeTaskTitle(payload: { task: DomainTask, model: UpdateTaskModel }) {
         const {task, model} = payload
         return instance
-            .put<UpdateTaskResponse>(
+            .put<BaseResponse<{item: DomainTask}>>(
                 `todo-lists/${task.todoListId}/tasks/${task.id}`, model)
     },
 
     deleteTask(payload: { taskId: string, todolistId: string }) {
         const {taskId, todolistId} = payload
-        return instance.delete<DeleteTaskResponse>(`todo-lists/${todolistId}/tasks/${taskId}`)
+        return instance.delete<BaseResponse>(`todo-lists/${todolistId}/tasks/${taskId}`)
     }
 }

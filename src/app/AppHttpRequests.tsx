@@ -1,9 +1,8 @@
 import Checkbox from '@mui/material/Checkbox'
-import axios from "axios";
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AddItemForm} from '../common/components/AddItemForm/AddItemForm'
 import {EditableSpan} from '../common/components/EditableSpan/EditableSpan'
-import {CreateTodolistResponse, Todolist} from "../features/todolists/api/todolistsApi.types";
+import {Todolist} from "../features/todolists/api/todolistsApi.types";
 import {DomainTask, UpdateTaskModel} from "../features/todolists/api/tasksApi.types";
 import {todolistsApi} from "../features/todolists/api/todolistsApi";
 import {tasksApi} from "../features/todolists/api/tasksApi";
@@ -32,17 +31,7 @@ export const AppHttpRequests = () => {
     //============== Todolists ================================
 
     const createTodolistHandler = (title: string) => {
-        axios
-            .post<CreateTodolistResponse>(
-                'https://social-network.samuraijs.com/api/1.1/todo-lists',
-                {title},
-                {
-                    headers: {
-                        Authorization: 'Bearer 134f0918-8765-4389-99d5-e97a27c472d5',
-                        'API-KEY': '8d201fb1-33ed-4ec9-a013-6de2e03bc35f',
-                    },
-                }
-            )
+        todolistsApi.createTodolist({title})
             .then(res => {
                 const newTodolist = res.data.data.item
                 setTodolists([newTodolist, ...todolists])
@@ -66,15 +55,17 @@ export const AppHttpRequests = () => {
             })
     }
 
+
+
+    //================================= Tasks ==================================
+
     const createTaskHandler = (title: string, todolistId: string) => {
-        todolistsApi.createTodolist({title, todolistId})
+        tasksApi.createTask({title, todolistId})
             .then(res => {
                 const newTask = res.data.data.item
                 setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
             })
     }
-
-    //=============== Tasks ==================================
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         tasksApi.deleteTask({taskId, todolistId})

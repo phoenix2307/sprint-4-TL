@@ -1,4 +1,3 @@
-import {FieldError} from "./todolistsApi.types";
 
 export type GetTasksResponse = {
     error: string | null
@@ -19,21 +18,6 @@ export type DomainTask = {
     addedDate: string
 }
 
-export type CreateTaskResponse = {
-    resultCode: number
-    messages: string[]
-    fieldsErrors: FieldError[]
-    data: {
-        item: DomainTask
-    }
-}
-
-export type DeleteTaskResponse = {
-    resultCode: number
-    messages: string[]
-    fieldsErrors: FieldError[]
-    data: {}
-}
 
 export type UpdateTaskModel = {
     title: string;
@@ -44,11 +28,3 @@ export type UpdateTaskModel = {
     deadline: string;
 };
 
-export type UpdateTaskResponse = {
-    resultCode: number
-    messages: string[]
-    fieldsErrors: FieldError[]
-    data: {
-        item: DomainTask
-    }
-}
