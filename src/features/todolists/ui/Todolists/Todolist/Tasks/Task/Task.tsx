@@ -6,12 +6,12 @@ import { ChangeEvent } from "react"
 import { EditableSpan } from "common/components"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TaskType } from "../../../../../model/tasks-reducer"
-import { TodolistType } from "../../../../../model/todolists-reducer"
 import { getListItemSx } from "./Task.styles"
+import {DomainTodolist} from "../../../../../model/todolists-reducer";
 
 type Props = {
   task: TaskType
-  todolist: TodolistType
+  todolist: DomainTodolist
 }
 
 export const Task = ({ task, todolist }: Props) => {
