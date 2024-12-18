@@ -3,6 +3,8 @@ import { RootState } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
 import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import {setAppErrorAC, setAppStatusAC} from "../../../app/app-reducer";
+import {ResultCode} from "common/enums";
 
 export type TasksStateType = {
   [key: string]: DomainTask[]
@@ -92,7 +94,9 @@ export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
 
 // Thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   tasksApi.getTasks(todolistId).then((res) => {
+    dispatch(setAppStatusAC('succeeded'))
     const tasks = res.data.items
     dispatch(setTasksAC({ todolistId, tasks }))
   })
@@ -105,8 +109,19 @@ export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (di
 }
 
 export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
-  tasksApi.createTask(arg).then((res) => {
-    dispatch(addTaskAC({ task: res.data.data.item }))
+  dispatch(setAppStatusAC('loading'))
+  tasksApi.createTask(arg).then(res => {
+    if (res.data.resultCode === ResultCode.Success) {
+      dispatch(addTaskAC({ task: res.data.data.item }))
+      dispatch(setAppStatusAC('succeeded'))
+    } else {
+      if (res.data.messages.length) {
+        dispatch(setAppErrorAC(res.data.messages[0]))
+      } else {
+        dispatch(setAppErrorAC('Some error occurred'))
+      }
+      dispatch(setAppStatusAC('failed'))
+    }
   })
 }
 
