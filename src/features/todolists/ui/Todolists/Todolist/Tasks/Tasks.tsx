@@ -6,6 +6,7 @@ import { fetchTasksTC } from "../../../../model/tasks-reducer"
 import { selectTasks } from "../../../../model/tasksSelectors"
 import { DomainTodolist } from "../../../../model/todolists-reducer"
 import { Task } from "./Task/Task"
+import {selectTodolists} from "../../../../model/todolistsSelectors";
 
 type Props = {
   todolist: DomainTodolist
