@@ -5,7 +5,6 @@ import {RequestStatus, setAppStatusAC} from "../../../app/app-reducer";
 import {handleServerNetworkError} from "common/utils/handleServerNetworkError";
 import {ResultCode} from "common/enums";
 import {handleServerAppError} from "common/utils/handleServerAppError";
-import {addTaskAC} from "./tasks-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -19,7 +18,7 @@ const initialState: DomainTodolist[] = []
 export const todolistsReducer = (state: DomainTodolist[] = initialState, action: ActionsType): DomainTodolist[] => {
     switch (action.type) {
         case "SET-TODOLISTS": {
-            return action.todolists.map((tl) => ({...tl, filter: "all", entityStatus: "succeeded"}))
+            return action.todolists.map((tl) => ({...tl, filter: "all", entityStatus: "idle"}))
         }
 
         case "REMOVE-TODOLIST": {
@@ -30,7 +29,7 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
             const newTodolist: DomainTodolist = {
                 ...action.payload.todolist,
                 filter: "all",
-                entityStatus: 'succeeded'
+                entityStatus: 'idle'
             }
             return [newTodolist, ...state]
         }
