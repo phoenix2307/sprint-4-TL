@@ -6,11 +6,12 @@ import FormGroup from '@mui/material/FormGroup'
 import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import {useAppSelector} from 'common/hooks'
+import {useAppDispatch, useAppSelector} from 'common/hooks'
 import {getTheme} from 'common/theme'
 import {selectThemeMode} from '../../../../app/appSelectors'
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import s from './Login.module.css'
+import {loginTC} from "../../model/auth-reducer";
 
 type Inputs = {
     email: string
@@ -27,10 +28,11 @@ export const Login = () => {
         reset,
         control,
         formState: {errors},
-    } = useForm<Inputs>({defaultValues: {email: '', password: '', rememberMe: false}})
+    } = useForm<Inputs>({defaultValues: {email: 'phoenix.trade2307@gmail.com', password: 'ph23', rememberMe: false}})
 
+    const dispatch = useAppDispatch()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
+        dispatch(loginTC(data))
         reset()
     }
 
@@ -69,7 +71,14 @@ export const Login = () => {
                                            },
                                        })}/>
                             {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
-                            <TextField type="password" label="Password" margin="normal" {...register('password')}/>
+                            <TextField type="password" label="Password" margin="normal" {...register('password', {
+                                required: 'Password is required',
+                                pattern: {
+                                    value: /^[a-zA-Z0-9_]+$/,
+                                    message: ' Incorrect password'
+                                }
+                            })}/>
+                            {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
                             <FormControlLabel
                                 label={'Remember me'}
                                 control={
@@ -82,7 +91,6 @@ export const Login = () => {
                                         }}
                                         name={'rememberMe'}/>
                                 }
-                                {...register('rememberMe')}
                             />
                             <Button type={'submit'} variant={'contained'} color={'primary'}>
                                 Login
