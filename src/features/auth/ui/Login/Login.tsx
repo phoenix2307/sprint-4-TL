@@ -12,6 +12,10 @@ import {selectThemeMode} from '../../../../app/appSelectors'
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import s from './Login.module.css'
 import {loginTC} from "../../model/auth-reducer";
+import {selectIsLoggedIn} from "../../model/authSelector";
+import {useNavigate} from "react-router";
+import {useEffect} from "react";
+import {Path} from "common/routing/Routing";
 
 type Inputs = {
     email: string
@@ -21,6 +25,16 @@ type Inputs = {
 export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const theme = getTheme(themeMode)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+    const navigate = useNavigate()
+
+
+    useEffect( () => {
+        if (isLoggedIn){
+            navigate(Path.Main)
+        }
+    }, [isLoggedIn] )
 
     const {
         register,
@@ -29,6 +43,7 @@ export const Login = () => {
         control,
         formState: {errors},
     } = useForm<Inputs>({defaultValues: {email: 'phoenix.trade2307@gmail.com', password: 'ph23', rememberMe: false}})
+
 
     const dispatch = useAppDispatch()
     const onSubmit: SubmitHandler<Inputs> = (data) => {

@@ -39,7 +39,7 @@ export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
             if (res.data.resultCode === ResultCode.Success){
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(setIsLoggedInAC(true))
-
+                localStorage.setItem('sn-token', res.data.data.token)
             } else {
                 handleServerAppError(res.data, dispatch)
             }
