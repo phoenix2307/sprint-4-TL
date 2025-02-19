@@ -35,7 +35,6 @@ export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authApi.login(data)
         .then(res => {
-
             if (res.data.resultCode === ResultCode.Success){
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(setIsLoggedInAC(true))
@@ -47,6 +46,21 @@ export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
         .catch((error)=>{
             handleServerNetworkError(error, dispatch)
         })
+}
 
-    // dispatch(setIsLoggedInAC(true))
+export const logoutTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    authApi.logout()
+        .then(res => {
+            if (res.data.resultCode === ResultCode.Success){
+                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setIsLoggedInAC(false))
+                localStorage.removeItem('sn-token')
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error)=>{
+            handleServerNetworkError(error, dispatch)
+        })
 }
