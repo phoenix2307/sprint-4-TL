@@ -16,12 +16,11 @@ import {selectIsLoggedIn} from "../../model/authSelector";
 import {useNavigate} from "react-router";
 import {useEffect} from "react";
 import {Path} from "common/routing/Routing";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {loginSchema} from "../../lib/shemas";
+import {Inputs} from "../../lib/shemas/loginSchema";
 
-type Inputs = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+
 export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const theme = getTheme(themeMode)
@@ -42,7 +41,9 @@ export const Login = () => {
         reset,
         control,
         formState: {errors},
-    } = useForm<Inputs>({defaultValues: {email: 'phoenix.trade2307@gmail.com', password: 'ph23', rememberMe: false}})
+    } = useForm<Inputs>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {email: 'phoenix.trade2307@gmail.com', password: 'ph23', rememberMe: false}})
 
 
     const dispatch = useAppDispatch()
@@ -77,22 +78,24 @@ export const Login = () => {
                     </FormLabel>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
-                            <TextField label="Email" margin="normal"
+                        {/*    <TextField label="Email" margin="normal"
                                        {...register('email', {
                                            required: 'Email is required',
                                            pattern: {
                                                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                                                message: 'Incorrect email address',
                                            },
-                                       })}/>
+                                       })}/>*/}
+                            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
                             {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
-                            <TextField type="password" label="Password" margin="normal" {...register('password', {
+                     {/*       <TextField type="password" label="Password" margin="normal" {...register('password', {
                                 required: 'Password is required',
                                 pattern: {
                                     value: /^[a-zA-Z0-9_]+$/,
                                     message: ' Incorrect password'
                                 }
-                            })}/>
+                            })}/>*/}
+                            <TextField type="password" label="Password" margin="normal" error={!!errors.password}{...register('password', )}/>
                             {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
                             <FormControlLabel
                                 label={'Remember me'}
