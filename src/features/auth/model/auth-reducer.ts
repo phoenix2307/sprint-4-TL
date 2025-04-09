@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {LoginArgs} from "../api/authApi.types";
-import {setAppStatusAC} from "../../../app/app-reducer";
+import {setAppStatusAC} from "../../../app/app-slice";
 import {authApi} from "../api/authApi";
 import {ResultCode} from "common/enums";
 import {handleServerAppError} from "common/utils/handleServerAppError";

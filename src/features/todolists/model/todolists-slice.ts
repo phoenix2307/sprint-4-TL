@@ -1,10 +1,11 @@
 import {Dispatch} from "redux"
 import {todolistsApi} from "../api/todolistsApi"
 import {Todolist} from "../api/todolistsApi.types"
-import {RequestStatus, setAppStatusAC} from "../../../app/app-reducer";
+import {RequestStatus, setAppStatusAC} from "../../../app/app-slice";
 import {handleServerNetworkError} from "common/utils/handleServerNetworkError";
 import {ResultCode} from "common/enums";
 import {handleServerAppError} from "common/utils/handleServerAppError";
+import {createSlice} from "@reduxjs/toolkit";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -12,6 +13,12 @@ export type DomainTodolist = Todolist & {
     filter: FilterValuesType
     entityStatus: RequestStatus
 }
+
+export const todolistsSlice = createSlice({
+    name: 'todolists',
+    initialState: [],
+    reducers: create => ({})
+})
 
 const initialState: DomainTodolist[] = []
 

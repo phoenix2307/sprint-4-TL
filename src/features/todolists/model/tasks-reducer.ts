@@ -2,8 +2,8 @@ import {Dispatch} from "redux"
 import {RootState} from "../../../app/store"
 import {tasksApi} from "../api/tasksApi"
 import {DomainTask, UpdateTaskDomainModel, UpdateTaskModel} from "../api/tasksApi.types"
-import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer"
-import {setAppStatusAC} from "../../../app/app-reducer";
+import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-slice"
+import {setAppStatusAC} from "../../../app/app-slice";
 import {ResultCode} from "common/enums";
 import {handleServerNetworkError} from "common/utils/handleServerNetworkError";
 import {handleServerAppError} from "common/utils/handleServerAppError";
